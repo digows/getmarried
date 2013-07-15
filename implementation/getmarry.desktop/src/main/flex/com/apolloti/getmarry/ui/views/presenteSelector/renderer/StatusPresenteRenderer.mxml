@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Image xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/halo" 
+	verticalAlign="middle" horizontalAlign="center"
+	resizeEffect="Dissolve"
+	source="{Presente(data).status == 'A Comprar' ? 'assets/img/toBuy.png' : 'assets/img/bought.png'}"
+	toolTip="{Presente(data).status == 'A Comprar' ? 'Este presente ainda não foi comprado.' : 'Presente já selecionado/comprado.'}" 
+	width="25" height="28">
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.apolloti.getmarry.domain.Presente;
+		]]>
+	</fx:Script>
+</mx:Image>

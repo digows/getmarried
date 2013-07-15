@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/halo"
+	xmlns:presenteSelector="com.apolloti.getmarry.ui.views.presenteSelector.*"
+	xmlns:login="com.apolloti.getmarry.ui.views.login.*"
+	width="100%" height="100%"
+	creationComplete="getMarryController.initialize()">
+	
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+
+	<mx:ViewStack width="100%" height="100%" selectedIndex="{getMarryController.currentView}">
+		<login:LoginView/>
+		<presenteSelector:PresenteSelectorView/>
+	</mx:ViewStack>
+	
+	<s:Group>
+		<s:layout>
+			<s:HorizontalLayout />
+		</s:layout>
+		
+		<s:Label text="Build v025" fontSize="9"/>
+		<s:Label text="Powered By:" fontSize="9"/>
+		<s:Label text="Apollo-Ti" buttonMode="true" 
+			fontSize="9" textDecoration="underline" 
+			click="navigateToURL( new URLRequest('http://www.apollo-ti.com') )"/>
+	</s:Group>
+	
+	<fx:Metadata>
+		[Name]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.apolloti.getmarry.controller.GetMarryController;
+			import flash.net.navigateToURL;
+			
+			/*-------------------------------------------------------------------
+			* 		 					ATTRIBUTES
+			*-------------------------------------------------------------------*/
+			[In]
+			[Bindable]
+			public var getMarryController:GetMarryController;
+		]]>
+	</fx:Script>
+	
+</s:Group>

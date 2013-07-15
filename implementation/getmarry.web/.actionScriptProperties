@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<actionScriptProperties mainApplicationPath="main.mxml" projectUUID="6beac512-c190-476c-9b82-690a3d64efab" version="6">
+  <compiler additionalCompilerArguments="-locale pt_BR -keep-as3-metadata+=Name,In,Out,Observer,Destroy,Version -services=${DOCUMENTS}/getmarry/getmarry.business/web-app/WEB-INF/flex/services-config.xml" autoRSLOrdering="true" copyDependentFiles="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" sourceFolderPath="src/main/flex" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
+    <compilerSourcePath>
+      <compilerSourcePathEntry kind="1" linkType="1" path="${DOCUMENTS}/getmarry/getmarry.desktop/src/main/flex"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="${DOCUMENTS}/getmarry/getmarry.desktop/src/main/resources"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="${DOCUMENTS}/getmarry/getmarry.business/grails-app/views/flex"/>
+    </compilerSourcePath>
+    <libraryPath defaultLinkType="0">
+      <libraryPathEntry kind="4" path="">
+        <excludedEntries>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/flex.swc" useDefaultLinkType="false"/>
+        </excludedEntries>
+      </libraryPathEntry>
+      <libraryPathEntry kind="1" linkType="1" path="libs"/>
+      <libraryPathEntry kind="3" linkType="1" path="${DOCUMENTS}/getmarry/getmarry.business/web-app/WEB-INF/flex/libs/granite-essentials.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="${DOCUMENTS}/getmarry/getmarry.business/web-app/WEB-INF/flex/libs/granite.swc" useDefaultLinkType="false"/>
+    </libraryPath>
+    <sourceAttachmentPath/>
+  </compiler>
+  <applications>
+    <application path="main.mxml"/>
+  </applications>
+  <modules/>
+  <buildCSSFiles/>
+</actionScriptProperties>

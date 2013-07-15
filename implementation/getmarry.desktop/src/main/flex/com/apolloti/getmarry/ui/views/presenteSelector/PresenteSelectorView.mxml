@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/halo"
+	xmlns:presenteSelector="com.apolloti.getmarry.ui.views.presenteSelector.*"
+	width="100%" height="100%"
+	currentState="{dgPresentes.selectedItem ? 'detailedState' : null}">
+
+	<s:states>
+		<s:State name="State1"/>
+		<s:State name="detailedState"/>
+	</s:states>
+	
+	<s:layout>
+		<s:VerticalLayout horizontalAlign="center" />
+	</s:layout>
+	
+	<mx:ApplicationControlBar width="99%">
+		<s:Label text="Olá! Seja Bem Vindo " fontSize="16" fontWeight="bold"/>
+		<s:Label fontSize="12" fontStyle="italic" 
+			text="{getMarryController.convidado.nome}"/>
+		<mx:Spacer width="100%" height="100%"/>
+		<s:Button label="Sair" click="loginController.backToLogin()"/>
+	</mx:ApplicationControlBar>
+	
+	<mx:HBox width="100%" height="60" textAlign="center" 
+		verticalAlign="middle" horizontalAlign="center">
+		<s:VGroup gap="0">
+			<s:RadioButton label="Não Comprados" groupName="filterModeGroup"
+				value="A Comprar"/>
+			<s:RadioButton label="Já Comprados" groupName="filterModeGroup"
+				value="Comprado"/>
+			<s:RadioButton label="Todos" groupName="filterModeGroup"
+				value="Todos" selected="true"/>
+		</s:VGroup>
+		
+		<mx:ToggleButtonBar id="menuCategoria" width="100%"
+			dataProvider="{categorias}" labelField="nome"
+			selectedIndex="0"
+			itemClick="presenteSelectorController.fillProdutosByCategoria( Categoria(event.item), filterModeGroup.selectedValue.toString() )"/>
+	</mx:HBox>
+	
+	<s:Border width="100%" height="100%">
+		<s:layout>
+			<s:HorizontalLayout paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" gap="1"/>
+		</s:layout>
+		
+			<mx:Panel width="100%" height="100%" 
+				title="Lista de presentes : {Categoria(categorias.getItemAt(menuCategoria.selectedIndex)).nome}" 
+				status="Total de Registros {presentes.length}">
+				
+				<mx:ViewStack id="vs" width="100%" height="100%">
+					
+					<s:NavigatorContent width="100%" height="100%">
+						<mx:DataGrid id="dgPresentes" width="100%" height="100%" resizeEffect="Resize"
+							dataProvider="{presentes}">
+							<mx:columns>
+								<mx:DataGridColumn headerText="Nome" dataField="nome"/>
+								<mx:DataGridColumn headerText="Marca" dataField="marca.nome" width="80"/>
+								<mx:DataGridColumn headerText="Modelo" dataField="modelo" width="80"/>
+								<mx:DataGridColumn headerText="Qtd." dataField="quantidade" width="30"/>
+								<mx:DataGridColumn headerText="Status" dataField="status" width="50"
+									itemRenderer="com.apolloti.getmarry.ui.views.presenteSelector.renderer.StatusPresenteRenderer"/>
+							</mx:columns>
+						</mx:DataGrid>
+					</s:NavigatorContent>
+					<!--
+					<s:NavigatorContent width="100%" height="100%">
+						<mx:TileList id="tilePresentes" dataProvider="{presentes}"
+							width="100%" height="100%" labelField="nome">
+						</mx:TileList>
+					</s:NavigatorContent>
+					-->
+				</mx:ViewStack>
+				<!--
+				<mx:ToggleButtonBar dataProvider="vs">
+				</mx:ToggleButtonBar>
+				-->
+			</mx:Panel>
+		
+		<presenteSelector:PresenteFormBox includeIn="detailedState" 
+			presente="{Presente(dgPresentes.selectedItem)}"/>
+		
+	</s:Border>
+	<!--
+	<fx:Binding source="dgPresentes.selectedItem" destination="tilePresentes.selectedItem"/>
+	<fx:Binding source="tilePresentes.selectedItem" destination="dgPresentes.selectedItem"/>
+	-->
+	
+	<fx:Declarations>
+		<s:RadioButtonGroup id="filterModeGroup" 
+			change="presenteSelectorController.fillProdutosByCategoria( Categoria(categorias.getItemAt(menuCategoria.selectedIndex)), filterModeGroup.selectedValue.toString() )"/>
+	</fx:Declarations>
+
+	<fx:Metadata>
+		[Name]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.apolloti.getmarry.controller.GetMarryController;
+			import com.apolloti.getmarry.controller.LoginController;
+			import com.apolloti.getmarry.controller.PresenteSelectorController;
+			import com.apolloti.getmarry.domain.Categoria;
+			import com.apolloti.getmarry.domain.Presente;
+			
+			import mx.collections.ArrayCollection;
+
+			/*-------------------------------------------------------------------
+			* 		 					ATTRIBUTES
+			*-------------------------------------------------------------------*/
+			//Controller
+			[In]
+			public var presenteSelectorController:PresenteSelectorController;
+			[In]
+			[Bindable]
+			public var getMarryController:GetMarryController;
+			[In]
+			public var loginController:LoginController;
+			
+			//Model
+			[In("#{presenteSelectorController.presentes}")]
+			[Bindable]
+			public var presentes:ArrayCollection;
+			
+			[In("#{presenteSelectorController.categorias}")]
+			[Bindable] 
+			public var categorias:ArrayCollection;
+			
+			[Observer("cancelSelection")]
+			public function cancelSelectionHandler():void 
+			{
+				this.currentState = null; 
+				dgPresentes.selectedItem = null;
+			}
+			
+		]]>
+	</fx:Script>
+	
+</s:NavigatorContent>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>getmarry.web</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.adobe.flexbuilder.project.flexbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.adobe.flexbuilder.project.flexnature</nature>
+		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>[source path] main-flex</name>
+			<type>2</type>
+			<locationURI>DOCUMENTS/getmarry/getmarry.desktop/src/main/flex</locationURI>
+		</link>
+		<link>
+			<name>[source path] resources</name>
+			<type>2</type>
+			<locationURI>DOCUMENTS/getmarry/getmarry.desktop/src/main/resources</locationURI>
+		</link>
+		<link>
+			<name>[source path] views-flex</name>
+			<type>2</type>
+			<locationURI>DOCUMENTS/getmarry/getmarry.business/grails-app/views/flex</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>

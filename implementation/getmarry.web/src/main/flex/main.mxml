@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/halo"
+	xmlns:ui="com.apolloti.getmarry.ui.*"
+	preinitialize="preinitializeHandler()">
+	
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+	
+	<ui:GetMarry/>
+	
+	<fx:Declarations>
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.apolloti.getmarry.controller.*;
+			import com.apolloti.getmarry.exception.ServiceExceptionHandler;
+			
+			import org.granite.tide.spring.Spring;
+			
+			/*-------------------------------------------------------------------
+			* 		 					ATTRIBUTES
+			*-------------------------------------------------------------------*/
+			
+			/*-------------------------------------------------------------------
+			* 		 					HANDLERS
+			*-------------------------------------------------------------------*/
+			private function preinitializeHandler():void
+			{
+				Spring.getInstance().initApplication();
+				Spring.getInstance().addExceptionHandler( ServiceExceptionHandler );
+				Spring.getInstance().addComponents([GetMarryController, LoginController, PresenteSelectorController]);
+				
+				Security.allowDomain("*");
+				Security.allowInsecureDomain("*");
+				Security.loadPolicyFile("http://java.apollo-ti.com/getmarry/crossdomain.xml");
+			}
+		]]>
+	</fx:Script>
+
+</s:Application>

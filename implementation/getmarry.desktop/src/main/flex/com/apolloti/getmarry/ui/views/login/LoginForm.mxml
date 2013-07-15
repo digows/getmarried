@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/halo"
+	xmlns:apolloti="http://www.apolloti.com/"
+	xmlns:domain="com.apolloti.getmarry.domain.*"
+	width="346" height="254" 
+	title="Identificação do Convidado."
+	currentState="{loginController.currentState}"
+	width.requestCode="446" height.requestCode="342" 
+	height.fillFields="342" width.fillFields="446">
+	
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+	
+	<s:states>
+		<s:State name="State1"/>
+		<s:State name="requestCode"/>
+		<s:State name="fillFields"/>
+	</s:states>
+	
+	<mx:Form id="form" width="100%" height="100%" resizeEffect="Fade" defaultButton="{defaultButton}">
+		
+		<mx:FormItem direction="horizontal" height="35">
+			<mx:Text text="Entre com sua Identificação" fontWeight="bold" text.requestCode="Entre com seus dados para solicitação" text.fillFields="Complete seus dados"/>				
+			<mx:Image source="@Embed('assets/img/question.png')"
+				toolTip="Esta identificação é um código que foi enviado junto ao convite do casamento. Se por ventura você não tem um código, você pode clicar em 'Solicitar um Código'." includeIn="State1" verticalAlign="middle" horizontalAlign="center"/>
+		</mx:FormItem>
+		
+		<mx:FormItem label="Código:" required="true" includeIn="State1">
+			<s:TextInput id="inputCodigo" width="100%"
+				text="{isNaN(convidado.codigo) ? '' : convidado.codigo}" 
+				change="entityChangedHandler()"/>
+		</mx:FormItem>
+		
+		<mx:FormItem includeIn="fillFields,requestCode" label="Nome Completo:" width="100%" required="true" fontWeight="bold">
+			<s:TextInput id="inputNome" width="100%" fontWeight="normal"
+				text="@{convidado.nome}" 
+				change="entityChangedHandler()"/>
+		</mx:FormItem>
+		<mx:FormItem includeIn="fillFields,requestCode" label="E-mail:" width="344" required="true" fontWeight="bold">
+			<s:TextInput id="inputEmail" width="100%" fontWeight="normal"
+				text="@{convidado.email}"
+				change="entityChangedHandler()"/>
+		</mx:FormItem>
+		<mx:FormItem label="Telefone:" width="260" required="true" includeIn="fillFields,requestCode" fontWeight="bold">
+			<s:TextInput id="inputTelefone" width="100%" fontWeight="normal"
+				text="@{convidado.telefone}"
+				change="entityChangedHandler()"/>
+		</mx:FormItem>
+		<mx:FormItem label="Observação:" width="100%" fontWeight="bold" height="106" includeIn="fillFields,requestCode">
+			<s:TextArea id="inputObservacao" width="100%"
+				text="@{convidado.observacao}" fontWeight="normal" height="100%"
+				change="entityChangedHandler()"/>
+		</mx:FormItem>
+	</mx:Form>
+
+	<s:controlBarContent>
+		<s:Button id="defaultButton" label="Entrar"
+			enabled="{isValid}"
+			width.State1="80" height="30"
+			click.State1="loginController.verifyCodeAndLogon( convidado )"
+			width.requestCode="120"
+			label.requestCode="Enviar Solicitação"
+			click.requestCode="loginController.notifyCodeRequest( convidado )"  
+			click.fillFields="loginController.saveAndLogon( convidado )" 
+			label.fillFields="Entrar" 
+			width.fillFields="80"/>
+		
+		<s:Label text="Solicitar um Código" text.requestCode="Cancelar" 
+			buttonMode="true" height="30" 
+			textDecoration="underline" verticalAlign="middle" color="#0B59C3" fontWeight="normal"
+			click="loginController.requestACode()" 
+			click.requestCode="loginController.backToLogin()" 
+			click.fillFields="loginController.backToLogin()" 
+			text.fillFields="Cancelar"/>
+	</s:controlBarContent>
+	
+	<fx:Declarations>
+		<!-- Validations -->
+		<fx:Array id="validators">
+			<mx:StringValidator id="vlCodigo"  minLength="2"
+				source="{inputCodigo}" property="text"/>
+		</fx:Array>
+		
+		<fx:Array id="validatorsFillFields">
+			<mx:StringValidator minLength="3" 
+				source="{inputNome}" property="text"/>
+			
+			<mx:EmailValidator
+				source="{inputEmail}" property="text"
+				required="{loginController.currentState == LoginController.FILL_FIELDS || loginController.currentState == LoginController.REQUEST_CODE }"/>
+			
+			<mx:PhoneNumberValidator minDigits="8"
+				source="{inputTelefone}" property="text"
+				required="{loginController.currentState == LoginController.FILL_FIELDS || loginController.currentState == LoginController.REQUEST_CODE }"/>	
+		</fx:Array>
+		
+		
+		<!-- Entity -->
+		<domain:Convidado id="convidado" 
+			codigo="{parseInt(inputCodigo.text)}"/>
+	</fx:Declarations>
+
+	<fx:Metadata>
+		[Name]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.apolloti.getmarry.controller.LoginController;
+			
+			import flash.events.Event;
+			
+			import mx.validators.Validator;
+			
+			/*-------------------------------------------------------------------
+			* 		 					ATTRIBUTES
+			*-------------------------------------------------------------------*/
+			//Controller
+			[In]
+			[Bindable]
+			public var loginController:LoginController;
+			
+			/*-------------------------------------------------------------------
+			* 		 					HANDLERS
+			*-------------------------------------------------------------------*/
+			[Observer("convidadoChanged")]
+			public function selectHotel(c:Convidado):void 
+			{
+				this.convidado = c;
+				entityChangedHandler();
+			}
+			
+			private function entityChangedHandler():void
+			{
+				dispatchEvent( new Event("entityChanged") );				
+			}
+			
+			/*-------------------------------------------------------------------
+			* 		 				GETTERS AND SETTERS
+			*-------------------------------------------------------------------*/
+			[Bindable(event="entityChanged")]
+			private function get isValid():Boolean
+			{
+				if ( inputCodigo != null && currentState == LoginController.VALIDATE_CODE )
+				{
+					return Validator.validateAll( validators ).length == 0;
+				}
+				else if ( currentState == LoginController.FILL_FIELDS || currentState == LoginController.REQUEST_CODE )
+				{
+					return Validator.validateAll( validatorsFillFields ).length == 0;
+				}
+				
+				return false;
+			}
+
+		]]>
+	</fx:Script>
+	
+</s:Panel>

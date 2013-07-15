@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:WindowedApplication
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:ui="org.granite.tide.uibuilder.*"
+    xmlns="*"
+    layout="vertical"
+    backgroundGradientColors="[#0e2e7d, #6479ab]"
+    preinitialize="Spring.getInstance().initApplication()"
+    initialize="init()" width="1024" height="800">
+   
+    <mx:Script>
+        <![CDATA[
+			import com.apolloti.getmarry.domain.Categoria;
+			import com.apolloti.getmarry.domain.Convidado;
+			import com.apolloti.getmarry.domain.Loja;
+			import com.apolloti.getmarry.domain.Marca;
+			import com.apolloti.getmarry.domain.Notificacao;
+			import com.apolloti.getmarry.domain.Presente;
+			
+			import mx.core.Container;
+			import mx.core.INavigatorContent;
+			
+			import org.granite.tide.deeplinking.TideUrlMapping;
+			import org.granite.tide.spring.Context;
+			import org.granite.tide.spring.Spring;
+			import org.granite.tide.uibuilder.*;
+			import org.granite.tide.uibuilder.util.ServiceExceptionHandler;
+            
+            [Bindable]
+            private var context:Context = Spring.getInstance().getSpringContext();
+            
+            Spring.getInstance().addPlugin(TideUrlMapping.getInstance());
+            Spring.getInstance().addComponents([GrailsEntityMetadataBuilder, DefaultUIBuilder, DefaultUIFormLayout]);
+            Spring.getInstance().addExceptionHandler(ServiceExceptionHandler);
+            
+            
+            private function init():void {
+ 				context.urlMapping.init("", "GraniteDS / Grails generated application");        
+ 				
+ 				addEventListener("showEntityUI", showEntityUI);
+ 				addEventListener("endEntityUI", endEntityUI);
+			}
+            
+			private var _previousSelected:INavigatorContent = null;
+			
+            private function showEntityUI(event:Event):void {
+        		_previousSelected = mainStack.selectedChild;
+            	if (_previousSelected !== this)
+            		mainStack.selectedChild = event.target as Container;
+            }
+            
+            private function endEntityUI(event:Event):void {
+            	if (_previousSelected != null)
+            		mainStack.selectedChild = _previousSelected;
+            }
+        ]]>
+    </mx:Script>
+
+    <mx:VBox id="mainUI" width="100%" height="100%">
+        <mx:ApplicationControlBar id="acb" width="100%">
+            <mx:Label text="GraniteDS / Grails generated application" fontSize="18" fontWeight="bold" color="#f0f0f0"/>
+        </mx:ApplicationControlBar>
+	   	
+		<mx:HBox width="100%" height="100%">
+			<mx:Panel width="200" height="100%" title="Controllers" paddingTop="4" paddingBottom="4">
+				<mx:LinkButton label="Categorias" width="100%" textAlign="left"
+					click="mainStack.selectedChild = categoriaUI" />
+            
+				<mx:LinkButton label="Convidados" width="100%" textAlign="left"
+					click="mainStack.selectedChild = convidadoUI" />
+            
+				<mx:LinkButton label="Lojas" width="100%" textAlign="left"
+					click="mainStack.selectedChild = lojaUI" />
+            
+				<mx:LinkButton label="Marcas" width="100%" textAlign="left"
+					click="mainStack.selectedChild = marcaUI" />
+            
+				<mx:LinkButton label="Notificacaos" width="100%" textAlign="left"
+					click="mainStack.selectedChild = notificacaoUI" />
+            
+				<mx:LinkButton label="Presentes" width="100%" textAlign="left"
+					click="mainStack.selectedChild = presenteUI" />
+            
+			</mx:Panel>
+	
+	        <mx:ViewStack id="mainStack" width="100%" height="100%">
+			    <ui:EntityUI id="categoriaUI" 
+			    	entityClass="{Categoria}" 
+			    	width="100%" height="100%"/>
+	            
+			    <ui:EntityUI id="convidadoUI" 
+			    	entityClass="{Convidado}" 
+			    	width="100%" height="100%"/>
+	            
+			    <ui:EntityUI id="lojaUI" 
+			    	entityClass="{Loja}" 
+			    	width="100%" height="100%"/>
+	            
+			    <ui:EntityUI id="marcaUI" 
+			    	entityClass="{Marca}" 
+			    	width="100%" height="100%"/>
+	            
+			    <ui:EntityUI id="notificacaoUI" 
+			    	entityClass="{Notificacao}" 
+			    	width="100%" height="100%"/>
+	            
+			    <ui:EntityUI id="presenteUI" 
+			    	entityClass="{Presente}" 
+			    	width="100%" height="100%"/>
+	            
+			</mx:ViewStack>
+		</mx:HBox>
+    </mx:VBox>
+</mx:WindowedApplication>
